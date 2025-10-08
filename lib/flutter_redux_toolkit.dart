@@ -1,9 +1,10 @@
 export 'src/action.dart';
 export 'src/listener.dart';
+export 'src/provider/redux.selector.dart';
+export 'src/provider/store.provider.dart';
 // export 'src/middleware.dart';
 export 'src/slice.dart';
 export 'src/store.dart';
-export 'src/thunk.dart';
 
 /// A Calculator.
 class Calculator {

@@ -1,31 +1,59 @@
+import 'package:example/user/user.slice.dart';
 import 'package:flutter/material.dart';
-
-class AppStore {}
+import 'package:flutter_redux_toolkit/flutter_redux_toolkit.dart';
 
 void main() {
-  // final store = Store<AppStore>(middlewares: )
-  runApp(const MyApp());
+  final store = Store([UserSlice]);
+  runApp(MyApp(store: store));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({super.key, required this.store});
+
+  final Store store;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: SizedBox(),
+      home: ReduxStoreProvider(store: store, child: const App()),
     );
   }
 }
 
-class _UserState {}
+class App extends StatelessWidget {
+  const App({super.key});
 
-// class UserSlice extends Slice<_UserState> {
-//   UserSlice({required super.nam});
-// }
-//
-// final userSlice = UserSlice(name: 'user', initialState: _UserState());
+  @override
+  Widget build(BuildContext context) {
+    final store = context.store();
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(store.getSliceState<UserState>().name),
+            ReduxSelector<String>(
+              selector: (store) => store.getSliceState<UserState>().name,
+              builder: (context, state) {
+                return Text(state);
+              },
+            ),
+            ElevatedButton(
+              onPressed: () {
+                store.dispatch(
+                  UserSlice.actions.setName('Jores Valdes Nkenne'),
+                );
+              },
+              child: Text('Salut'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
