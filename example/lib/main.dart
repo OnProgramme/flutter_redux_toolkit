@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux_toolkit/flutter_redux_toolkit.dart';
 
 void main() {
-  final store = Store([UserSlice]);
+  final store = Store([userSlice]);
   runApp(MyApp(store: store));
 }
 
@@ -46,7 +46,7 @@ class App extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 store.dispatch(
-                  UserSlice.actions.setName('Jores Valdes Nkenne'),
+                  userSlice.actions.setName('Jores Valdes Nkenne'),
                 );
               },
               child: Text('Salut'),

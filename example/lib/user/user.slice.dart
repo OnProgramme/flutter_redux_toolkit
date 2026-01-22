@@ -36,16 +36,33 @@ class UserMethods {
   }
 }
 
-final UserSlice = Slice<UserState, UserActions, UserMethods>(
-  name: 'user',
+// final UserSlice = Slice<UserState, UserActions, UserMethods>(
+//   name: 'user',
+//   initialState: UserState(),
+//   reducer: (state, action) {
+//     if (action is Action<UserState>) {
+//       return action.payload;
+//     }
+//     return state;
+//   },
+//   actionsBuilder: (slice, creator) => UserActions(slice, creator),
+//   methodsBuilder: (slice) => UserMethods(slice),
+// );
 
-  initialState: UserState(),
-  reducer: (state, action) {
-    if (action is Action<UserState>) {
-      return action.payload;
-    }
-    return state;
-  },
-  actionsBuilder: (slice, creator) => UserActions(slice, creator),
-  methodsBuilder: (slice) => UserMethods(slice),
-);
+class UserSlice extends Slice<UserState, UserActions, UserMethods> {
+  UserSlice()
+    : super(
+        name: 'user',
+        initialState: UserState(),
+        reducer: (state, action) {
+          if (action is Action<UserState>) {
+            return action.payload;
+          }
+          return state;
+        },
+        actionsBuilder: (slice, creator) => UserActions(slice, creator),
+        methodsBuilder: (slice) => UserMethods(slice),
+      );
+}
+
+final userSlice = UserSlice();

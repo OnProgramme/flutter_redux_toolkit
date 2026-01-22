@@ -10,7 +10,6 @@ abstract class SliceBase {
 
 class Slice<S extends SliceState, A, M> extends SliceBase {
   final String name;
-  final S initialState;
   final Reducer<S> reducer;
   late A actions;
   late M methods;
@@ -19,29 +18,17 @@ class Slice<S extends SliceState, A, M> extends SliceBase {
 
   Type get stateType => S;
 
-  Slice._({
-    required this.name,
-    required this.initialState,
-    required this.reducer,
-  }) : _state = initialState;
-
-  factory Slice({
-    required String name,
+  Slice({
     required S initialState,
-    required Reducer<S> reducer,
+    required this.name,
+    required this.reducer,
     required A Function(Slice<S, A, M> slice, ActionCreator<S> creator)
     actionsBuilder,
     required M Function(Slice<S, A, M> slice) methodsBuilder,
   }) {
-    final slice = Slice<S, A, M>._(
-      name: name,
-      initialState: initialState,
-      reducer: reducer,
-    );
-
-    slice.actions = actionsBuilder(slice, ActionCreator<S>(name));
-    slice.methods = methodsBuilder(slice);
-    return slice;
+    _state = initialState;
+    actions = actionsBuilder(this, ActionCreator<S>(name));
+    methods = methodsBuilder(this);
   }
 
   void bindStore(Store store) {
